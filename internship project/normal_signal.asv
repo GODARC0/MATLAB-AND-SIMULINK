@@ -1,0 +1,15 @@
+% Step 1: Generate a Normal Vibration Signal
+fs = 1000;          % Sampling frequency (Hz)
+t = 0:1/fs:1-1/fs;  % Time vector: 1 second of data
+
+% Normal machine vibration = clean sine wave at 50 Hz
+freq_normal = 50;
+signal_normal = sin(2 * pi * freq_normal * t);
+
+% Plot the signal
+figure;
+plot(t(1:200), signal_normal(1:200));  % Show first 200 ms
+title('Normal Vibration Signal (Time Domain)');
+xlabel('Time (s)');
+ylabel('Amplitude');
+grid on;
