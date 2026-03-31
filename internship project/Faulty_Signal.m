@@ -9,8 +9,8 @@ load('normal_signal.mat');   % loads: signal_normal, t, fs
 
 % --- Fault Parameters ---
 freq_fault = 120;    % Fault introduces a 120 Hz component (e.g. worn bearing)
-amp_fault  = 0.8;   % Fault amplitude (0.8 = strong fault)
-noise_level = 0.5;  % Random noise level
+amp_fault  = 0.3;   % Fault amplitude (0.8 = strong fault)
+noise_level = 0.05;  % Random noise level
 
 % --- Generate fault components ---
 fault_component = amp_fault * sin(2 * pi * freq_fault * t);
