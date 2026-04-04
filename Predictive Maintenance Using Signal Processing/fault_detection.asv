@@ -1,7 +1,7 @@
 %% Step 4: RMS Calculation and Automated Fault Detection
 % -----------------------------------------------
 % Project: Predictive Maintenance Using Signal Processing
-% Author : [Your Name]
+% Author : Mohd Luqmaan
 % -----------------------------------------------
 % PURPOSE:
 %   Use RMS and FFT peak analysis as dual detection methods.
@@ -17,6 +17,9 @@ N = length(t);
 
 %% -----------------------------------------------
 %  PART A: RMS CALCULATION
+%  WHY: RMS = Root Mean Square = average energy level
+%  A pure sine wave of amplitude 1 always has RMS = 0.7071
+%  Any fault adds energy → RMS increases above baseline
 % -----------------------------------------------
 
 rms_normal = sqrt(mean(signal_normal .^ 2));   % same as rms() but explicit
@@ -50,7 +53,7 @@ peak_120_faulty = mag_faulty_half(idx_120);
 
 % Noise floor: average FFT magnitude away from known peaks
 spike_mask = (f_axis > 40 & f_axis < 60) | (f_axis > 110 & f_axis < 130);
-noise_floor = mean(mag_faulty_half(~spike_mask & f_axis > 5));
+noise_floor = mean(mag_faulty_half(~spike_mask & f_axis' > 5));
 
 %% -----------------------------------------------
 %  PART C: THRESHOLDS AND DECISION LOGIC
