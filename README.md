@@ -1,79 +1,98 @@
-# MATLAB & Simulink Projects
+# MATLAB & Simulink
 
-A growing collection of MATLAB scripts and Simulink models built over time — covering control systems, signal processing, fault detection, and predictive maintenance. Started as coursework experiments, gradually turning into actual engineering projects.
-
+> A growing collection of MATLAB scripts and Simulink models covering signal processing, control systems, power electronics, and many more.
 ---
 
-##  Repository Structure
+## Repository Structure
 
 ```
 MATLAB-AND-SIMULINK/
-│
-├── DC motor speed control/          # Open & closed-loop DC motor speed control (Simulink)
-├── MATLAB programs/                 # General MATLAB scripts and experiments
-├── Predictive Maintenance Using     # Signal processing-based fault detection (MATLAB)
-│   Signal Processing/
-├── Smart_Guard/                     # MATLAB analysis companion to the ESP32 SmartGuard project
-│
-├── open_loop_DC.slx                 # Standalone open-loop DC motor Simulink model
-├── normal_signal.mat                # Reference signal data (healthy system)
-└── faulty_signal.mat                # Faulty signal data for anomaly detection
+├── DC motor speed control/                          # PID closed-loop DC motor control (Simulink)
+├── MATLAB programs/                                 # General MATLAB scripts and exercises
+├── Power Electronics/                               # Rectifier circuit simulations (Simulink)
+├── Predictive Maintenance Using Signal Processing/  # Fault detection via FFT & RMS
+├── Smart_Guard/                                     # Motor protection system simulation
+
 ```
 
 ---
 
-##  Projects
+## Projects
 
-###  DC Motor Speed Control
-**Tools:** Simulink, Transfer Function blocks
+### 1. DC Motor Speed Control
+**Folder:** `DC motor speed control/` · **Tools:** MATLAB, Simulink
 
-Open-loop and closed-loop PID speed control of a DC motor built in Simulink. Uses Transfer Function blocks to model the motor plant and a PID controller for the closed-loop response. This was also used as the demo model for an **IEEE RAS workshop** on DC motor control — so it's clean and well-structured for teaching purposes too.
+Closed-loop speed control of a DC motor using a PID controller. Models the motor's electrical and mechanical dynamics, tunes the controller for a desired step response, and compares open-loop vs. closed-loop performance.
 
-- Open-loop model: `open_loop_DC.slx`
-- Closed-loop PID model: inside `DC motor speed control/`
-
----
-
-###  Predictive Maintenance Using Signal Processing
-**Tools:** MATLAB, Signal Processing Toolbox
-
-MATLAB-based analysis pipeline for detecting anomalies in machinery signals. Works with `.mat` data files representing normal and faulty operating conditions. The workflow covers:
-- Loading and visualizing time-domain signals
-- Feature extraction from sensor data
-- Comparing healthy vs. faulty signal characteristics to flag potential failures
-
-Signal data files (`normal_signal.mat`, `faulty_signal.mat`) are included at the root level for quick access.
+**Key concepts:** Transfer functions · PID tuning · Step response · Simulink block diagrams
 
 ---
 
-###  SmartGuard — MATLAB Analysis Module
-**Tools:** MATLAB, Signal Processing
+### 2. Power Electronics — Rectifier Circuits
+**Folder:** `Power Electronics/` · **Tools:** Simulink (SimPowerSystems)
 
-The MATLAB-side complement to the **SmartGuard** ESP32-based fault detection system. While the ESP32 handles real-time hardware monitoring, this module handles the offline/analytical side — processing acquired signals, validating fault thresholds, and serving as a reference for what the embedded system should be detecting. Part of a larger competition entry combining embedded systems + MATLAB analysis.
+Simulink models of single-phase and three-phase rectifier circuits, covering both uncontrolled and controlled configurations.
 
----
+**Models included:**
+| File | Description |
+|---|---|
+| `Single_phase_Half_wave_rectifiers.slx` | Single-phase half-wave rectifier |
+| `Single_phase_fullwave_rectifiers.slx` | Single-phase full-wave rectifier |
+| `Three_phase_halfwave_rectifier.slx` | Three-phase half-wave rectifier |
+| `Three_phase_fullwave_rectifier.slx` | Three-phase full-wave rectifier |
 
-###  MATLAB Programs
-A general folder for standalone MATLAB scripts — basic programs, numerical methods, experiments, and anything that doesn't fit neatly into a named project. Grows over time.
-
----
-
-
-
-##  Notes
-
-- This repo is actively growing — new projects get added as they're built during coursework, workshops, and personal work
-- `.mat` files are included where needed so scripts can be run without generating your own data first
-- Simulink models were built using Transfer Function blocks (not Simscape) — keeping things closer to the control theory side
+**Key concepts:** AC-DC conversion · Diode bridge circuits · Waveform analysis · Three-phase systems
 
 ---
 
-##  Upcoming Additions
+### 3. Predictive Maintenance Using Signal Processing
+**Folder:** `Predictive Maintenance Using Signal Processing/` · **Tools:** MATLAB
 
-- Self-Balancing Robot — PID + LQR implementation (NIT Calicut internship project)
-- State-space modeling and pole placement experiments
-- More signal processing / condition monitoring work
+Simulates vibration signals for healthy and faulty rotating machinery, then applies frequency-domain analysis to automatically detect faults.
+
+- Generates synthetic vibration signals with injected fault frequencies
+- Applies FFT to identify spectral anomalies
+- Uses RMS thresholding for automated fault/no-fault classification
+- Visualizes time-domain and frequency-domain comparisons side by side
+
+**Key concepts:** FFT · RMS · Spectral analysis · Fault detection · Signal classification
 
 ---
 
-*Part of an ongoing journey through control systems and robotics. — GODARC0*
+### 4. Smart Guard — Motor Protection System  (ONGOING)
+**Folder:** `Smart_Guard/` · **Tools:** MATLAB / Simulink
+
+Simulation of an intelligent motor protection system that monitors electrical and thermal parameters, detects fault conditions, and triggers protection responses.
+
+**Key concepts:** Overcurrent protection · Thermal modeling · Fault simulation · Threshold logic
+
+---
+
+### 5. MATLAB Programs
+**Folder:** `MATLAB programs/`
+
+General-purpose MATLAB scripts covering foundational topics — matrix operations, signal generation, plotting, and introductory system modeling.
+
+---
+
+## Getting Started
+
+**Requirements:**
+- MATLAB R2021a or later
+- Simulink (for `.slx` files)
+- Signal Processing Toolbox (for predictive maintenance project)
+
+**Steps:**
+1. Clone the repository: `git clone https://github.com/GODARC0/MATLAB-AND-SIMULINK.git`
+2. Open MATLAB and navigate (`cd`) to the desired project folder
+3. Run the `.m` script or open the `.slx` model in Simulink
+
+---
+
+## License
+
+Licensed under the [MIT License](LICENSE).
+
+---
+
+*Builduing while learning*
