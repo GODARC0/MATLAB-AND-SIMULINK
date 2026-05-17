@@ -1,4 +1,4 @@
-%% Step 4: RMS Calculation and Automated Fault Detection
+D%% Step 4: RMS Calculation and Automated Fault Detection
 % -----------------------------------------------
 % Project: Predictive Maintenance Using Signal Processing
 % Author : [Your Name]
