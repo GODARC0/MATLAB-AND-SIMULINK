@@ -1,0 +1,37 @@
+clc 
+
+%defining state matrices
+A = [0 1; 2 -1]; % State matrix A
+B = [1; 0];       % Input matrix B
+C = [1 0];       % Output matrix C
+D = 0;           % Feedthrough matrix D
+
+% create state space object
+
+sys = ss(A, B, C, D);
+
+%check open loop Eigenvalues
+E = eig(A)
+
+%solve for k using pole placement
+
+% desired closed-loop eigenvalue 
+P = [-2 -1];
+
+% compute state-feedback gain K using place
+K = place(A, B, P);
+disp(K);
+
+%checking for closed loop eigenvalues
+Acl = A - B*K
+Ecl = eig(Acl)
+
+
+%create a closed loop system
+syscl = ss(Acl, B, C, D);
+
+%Check step response
+
+step(syscl)
+
+Kdc = dcgain(syscl)
