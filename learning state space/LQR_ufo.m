@@ -1,7 +1,7 @@
 close all
 
 % Initial Conditions
-x0 = [3;  % 3 radians
+x0 = [9;  % 3 radians
       0]; % 0 rad/s
 
 % System Dynamics
@@ -13,9 +13,9 @@ C = [1 0];
 D = 0;
 
 % Control Law
-Q = [1 0;  % Penalize angular error
-     0 10]; % Penalize angular rate
-R = 50;     % Penalize thruster effort
+Q = [10 0;  % Penalize angular error
+     0 1]; % Penalize angular rate
+R = 1;     % Penalize thruster effort
 K = lqr(A,B,Q,R);
 
 % Closed loop system

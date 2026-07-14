@@ -20,7 +20,6 @@ P = [-2 -1];
 
 % compute state-feedback gain K using place
 K = place(A, B, P);
-disp(K);
 
 %checking for closed loop eigenvalues
 Acl = A - B*K
