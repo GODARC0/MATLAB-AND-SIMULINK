@@ -1,0 +1,39 @@
+ABABABA
+ABABABA
+ABABABA
+Header and packed length both verify, so the compression side works. I read through `mzip.m`, and the structure is sound: option check, missing-file error, `onCleanup` for the output file, big-endian header.
+
+**Fixes to make now**
+1. **Argument checks by option.** `'d'` needs `outfile`, but `'i'` only needs `infile`. Move the `nargin < 3` check so it applies to both `'c'` and `'d'`.
+2. **Type check.** Also error if `infile` isn't a char or string (`ischar(infile)`), so `mzip('c', 5, 'x')` gives a clear message.
+3. **Your test is too weak.** It only checks the header on a 24-byte file. The real test is a **round trip**, which you can only run once `'d'` exists.
+
+**Write `'d'` next.** Steps:
+- Open the file with `'r','ieee-be'`. Error if it's missing.
+- Read `originalSize`, `numCodes` (uint32), then the rest as `uint8`.
+- If the file is shorter than 8 bytes, error: `'Not a valid mzip file'`.
+- `codes = unpack12(packed, numCodes);`
+- `data = lzw_decode(codes);`
+- If `numel(data) ~= originalSize`, error: `'Corrupt file: size mismatch'`. This is a useful sanity check, and examiners like it.
+- Write `data` with `fwrite(fid, data, 'uint8')`.
+
+Watch the empty-file case: `numCodes = 0` means `unpack12` and `lzw_decode` must return empty, and you should still create an empty output file.
+
+**Then `'i'`.** Read only the 8-byte header, and get the compressed size from `dir(infile).bytes`. Print:
+- original size
+- compressed size (whole file, header included)
+- ratio = original / compressed
+- bits per input byte = 8 × compressed / original
+
+Guard against `original == 0`, which would divide by zero. Entropy needs the original data, so compute it in `run_tests.m`, not here.
+
+**Round-trip test** (replace the header-only part of `test_mzip.m`):
+```matlab
+mzip('d', 'sample.mzip', 'restored.txt');
+a = fread(fopen('sample.txt'), Inf, 'uint8=>uint8');
+b = fread(fopen('restored.txt'), Inf, 'uint8=>uint8');
+assert(isequal(a, b));
+```
+Run it on a larger text file too, and on a PNG or JPG, since the 24-byte sample never reaches the 4096 limit.
+
+Send `'d'` and `'i'` when they run.

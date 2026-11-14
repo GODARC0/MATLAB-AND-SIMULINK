@@ -1,0 +1,4 @@
+fid = fopen(infile, 'r');
+if fid < 0, error('mzip:fileNotFound', 'Cannot open file: %s', infile); end
+data = fread(fid, Inf, 'uint8=>uint8')';
+fclose(fid);

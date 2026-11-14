@@ -1,0 +1,28 @@
+function codes = lzw_encode(bytes)
+    % Input : bytes = uint8 vector
+    % Output: codes = row vector of LZW codes
+
+    codes = [];
+    if isempty(bytes)
+        return;                      % empty file -> no codes
+    end
+
+    % TODO 1: create an empty Map (numeric keys, numeric values)
+    % TODO 2: nextCode = 256
+    % TODO 3: w = first byte, converted to double
+
+    for i = 2:numel(bytes)
+        % TODO 4: c = current byte as double
+        % TODO 5: key = w*256 + c
+
+        % TODO 6: if key is in the Map
+        %             w = value stored for key
+        %         else
+        %             append w to codes
+        %             store key -> nextCode, then nextCode++
+        %             w = c
+        %         end
+    end
+
+    % TODO 7: append the last w to codes
+end
