@@ -19,62 +19,86 @@ function bytes = lzw_decode(codes)
     % First code from the encoded input
     prev = codes(1);
 
-    % TODO 1: Output the first code as a single byte
-    bytes(end + 1) = uint8(prev);
+    %% STEP 1: Preallocate cell array for decoded sequences
+
+    % Each input code produces one decoded sequence
+    out = cell(1, numel(codes));
+
+    % Store the first decoded byte
+    out{1} = uint8(prev);
+
+    %% STEP 2: Process remaining codes
 
     for i = 2:numel(codes)
 
-        % Read the current code
+        % Read current code
         k = codes(i);
 
         if k < nextCode
 
-            % TODO 2: Expand the existing dictionary code
+            % Existing dictionary entry
             seq = expand(k, prefix, suffix);
+
+        elseif k == nextCode
+
+            % Special LZW case:
+            % Previous sequence followed by its first byte
+            prevSeq = expand(prev, prefix, suffix);
+
+            seq = [prevSeq, prevSeq(1)];
 
         else
 
-            % TODO 3: Special LZW case (k == nextCode)
-            % Sequence = previous sequence + its first byte
-            prevSeq = expand(prev, prefix, suffix);
-            seq = [prevSeq, prevSeq(1)];
+            % Invalid dictionary code
+            error('lzw:invalidCode', ...
+                  'Invalid LZW code encountered.');
 
         end
 
-        % TODO 4: Append the decoded sequence to output
-        bytes = [bytes, uint8(seq)];
+        %% STEP 3: Store decoded sequence
 
-        % Add a new dictionary entry if space is available
+        % Store sequence in the corresponding cell
+        out{i} = uint8(seq);
+
+        %% STEP 4: Update dictionary
+
         if nextCode < 4096
 
-            % TODO 5: Store the previous code as the prefix
+            % Store previous code as prefix
             prefix(nextCode + 1) = prev;
 
-            % Store the first byte of the current sequence as suffix
+            % Store first byte of current sequence as suffix
             suffix(nextCode + 1) = seq(1);
 
-            % Move to the next available dictionary code
+            % Increment next available code
             nextCode = nextCode + 1;
 
         end
 
-        % Update previous code for the next iteration
+        % Update previous code
         prev = k;
 
     end
+
+    %% STEP 5: Combine all decoded sequences
+
+    % Concatenate cell contents into final byte array
+    bytes = [out{:}];
+
 end
 
 
-% Helper function to expand a dictionary code into its byte sequence
+%% Helper function: Expand dictionary code
+
 function seq = expand(code, prefix, suffix)
 
-    % If code is a literal byte, return it directly
+    % Literal byte: return directly
     if code < 256
         seq = uint8(code);
         return;
     end
 
-    % Temporary storage for the decoded sequence
+    % Temporary sequence storage
     seq = uint8([]);
 
     % Follow prefix links until reaching a literal byte
@@ -83,18 +107,18 @@ function seq = expand(code, prefix, suffix)
         % MATLAB uses 1-based indexing
         idx = code + 1;
 
-        % Add the suffix byte to the sequence
+        % Append suffix byte
         seq(end + 1) = uint8(suffix(idx));
 
-        % Move to the prefix code
+        % Move to prefix code
         code = prefix(idx);
 
     end
 
-    % Add the final literal byte
+    % Append final literal byte
     seq(end + 1) = uint8(code);
 
-    % Reverse the sequence to restore original byte order
+    % Reverse to restore original byte order
     seq = fliplr(seq);
 
 end
